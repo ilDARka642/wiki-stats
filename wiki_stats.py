@@ -123,6 +123,14 @@ def ex3(self):
                    redirects_to_page[elem] += 1
       pages_max_nr  = [G.get_title(i) for i in range(G.get_number_of_pages()) if redirects_to_page[i] == max(redirects_to_page) ]
 
+      global dict_nlp
+      dict_nlp = {}
+      for i in range(len(nlp)):
+         if  nlp[i] not in  dict_nlp:
+            dict_nlp[nlp[i]] = 1
+         else:
+            dict_nlp[nlp[i]] += 1
+
       way = bfs(G, 'Python','Список_файловых_систем')
       way = [G.get_title(way[i]) for i in range(len(way)) ]
 
@@ -147,10 +155,24 @@ def ex3(self):
               'Статья с наибольшим количеством внешних перенаправлений:' + str(pages_max_nr)  + '\n' +
               "Среднее количество внешних перенаправлений на статью: %0.2f  (ср. откл. : %0.2f)" %(statistics.mean(redirects_to_page), statistics.stdev(redirects_to_page)) )
 
+def ex4(self):
+     x, y = [], []
+     liamda = len(dict_nlp)/10
+     for elem in dict_nlp:
+        x.append(elem)
+        y.append(dict_nlp[elem])
+     plt.figure(2)
+     x_pos = np.arange(len(x))
+     x_pos_im = np.arange( 0, max(x), liamda)
+     plt.bar(x_pos, y, align='center', alpha=1)
+     plt.xticks(x_pos_im)
+     plt.plot()
+     plt.show()
         
 G = WikiGraph()
 G.load_from_file('wiki_small.txt')
 ex3(G)
+ex4(G)
 
 if __name__ == '__main__':
 
